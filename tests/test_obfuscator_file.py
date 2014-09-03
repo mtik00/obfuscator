@@ -20,6 +20,7 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         (fh, Test.testfile_path) = tempfile.mkstemp()
+        Test.file = obfuscator.file.ObfuscatedFile(Test.testfile_path)
         os.close(fh)
 
     @classmethod
@@ -31,19 +32,19 @@ class Test(unittest.TestCase):
 
     def test_01_write_string(self):
         data = map(ord, "testing")
-        key = obfuscator.file.write(data, Test.testfile_path, key=123, minimum_length=32)
+        key = Test.file.write(data, key=123, minimum_length=32)
         self.assertEqual(32, os.path.getsize(Test.testfile_path))
         self.assertGreater(key, 0)
 
     def test_02_read_string(self):
-        data = obfuscator.file.read(Test.testfile_path, key=123)
+        data = Test.file.read(key=123)
         read_string = ''.join(map(chr, data))
         self.assertEqual("testing", read_string)
         self.assertEqual(chr(data[0]), "t")
         self.assertEqual(chr(data[-1]), "g")
 
     def test_03_read_string_wrong_key(self):
-        data = obfuscator.file.read(Test.testfile_path)
+        data = Test.file.read()
         read_string = ''.join(map(chr, data))
         self.assertNotEqual("testing", read_string)
         self.assertNotEqual(chr(data[0]), "t")
@@ -51,21 +52,21 @@ class Test(unittest.TestCase):
 
     def test_04_write_bytes(self):
         data = [1, 2, 3, 4]
-        key = obfuscator.file.write(data, Test.testfile_path, minimum_length=0)
-        self.assertEqual(len(data) + obfuscator.file.FileHeader.size, os.path.getsize(Test.testfile_path))
+        key = Test.file.write(data, minimum_length=0)
+        self.assertEqual(len(data) + Test.file.size, os.path.getsize(Test.testfile_path))
         self.assertGreater(key, 0)
 
     def test_05_read_bytes(self):
-        data = obfuscator.file.read(Test.testfile_path)
+        data = Test.file.read()
         self.assertEqual([1, 2, 3, 4], data)
 
     def test_06_write_rot13_string(self):
         data = map(ord, "testing")
-        obfuscator.file.write(data, Test.testfile_path, minimum_length=0)
-        self.assertEqual(len(data) + obfuscator.file.FileHeader.size, os.path.getsize(Test.testfile_path))
+        Test.file.write(data, minimum_length=0)
+        self.assertEqual(len(data) + Test.file.size, os.path.getsize(Test.testfile_path))
 
     def test_07_read_rot13_string(self):
-        data = obfuscator.file.read(Test.testfile_path)
+        data = Test.file.read()
         read_string = ''.join(map(chr, data))
         self.assertEqual("testing", read_string)
 
