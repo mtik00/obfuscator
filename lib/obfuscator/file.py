@@ -3,7 +3,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "0.02"
+__version__ = "1.0.0"
 """
 This module contains a file-level interface for the obfuscation methods.
 """
