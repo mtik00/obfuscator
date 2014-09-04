@@ -4,7 +4,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/27/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 """
 This module contains a simple mechanism for obfuscating a set of data.  Consider
 this "security through obscurity".  This module contains no encryption mechanisms!
