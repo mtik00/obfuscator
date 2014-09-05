@@ -5,6 +5,10 @@ Obfuscator is a Python package used to obfuscate a set of data (e.g. bytes).  It
 provides **no** encryption!  It's strictly a "security through obscurity" tool,
 with limited usefulness.  You have been warned!
 
+Documentation
+=============
+
+Documentation is hosted on readthedocs: [obfuscator.readthedocs.org](http://obfuscator.readthedocs.org/en/latest/)
 
 Install
 =======

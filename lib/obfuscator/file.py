@@ -1,12 +1,12 @@
 #!/usr/bin/env python2.7
+"""
+This module contains a file-level interface for the XOR obfuscation methods.
+"""
 __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.0.0"
-"""
-This module contains a file-level interface for the obfuscation methods.
-"""
+__version__ = "1.0.1"
 # Imports ######################################################################
 import struct
 import random
@@ -14,17 +14,53 @@ from . import _get_encoder_type, _get_decoder
 
 
 class ObfuscatedFile(object):
-    """The standard header for all obfuscated binary files."""
+    """
+    :param str filename: The path of the file you want to read/write.
+
+    This class represents an obfuscated data file.  You can use this to store
+    some-what sensitive information inside a file.  The documentation for some of
+    the functions is purposely light.
+
+    Example #1 - Storing a string::
+
+        >>> from obfuscator.file import ObfuscatedFile
+        >>> of = ObfuscatedFile('data.bin')
+        >>> bytes = map(ord, "my string")
+        >>> of.write(bytes)  # data.bin is 32 bytes long
+        86  # The random key used for encoding; stored in the file
+        >>> read_bytes = of.read()
+        >>> read_bytes
+        [109L, 121L, 32L, 115L, 116L, 114L, 105L, 110L, 103L]
+        >>> ''.join(map(chr, read_bytes))
+        'my string'
+
+    Example #2 - Storing a string with known key::
+
+        >>> from obfuscator.file import ObfuscatedFile
+        >>> of = ObfuscatedFile('data.bin')
+        >>> bytes = map(ord, "my string")
+        >>> my_key = 0xCF
+        >>> of.write(bytes, my_key)  # data.bin is 32 bytes long
+        207
+        >>> read_bytes = of.read()  # Notice how we didn't use a key
+        >>> ''.join(map(chr, read_bytes))
+        '\\H\x11BECX_V'
+        >>> # The string is wrong because the key is not stored in the file
+        >>> read_bytes = of.read(key=my_key)
+        >>> ''.join(map(chr, read_bytes))
+        'my string'
+        >>>
+
+    """
 
     size = 5  # Number of bytes in the header
 
     def __init__(self, filename):
         """
-        :param str filename: The path of the file you want to write
+        :param str filename: The path of the file you want to read/write.
         """
         self.__CONST_NUM = 0x8343353C
-        self.__CONST_NUMS = [0x40, 0x9C, 0x38, 0x34, 0x42, 0x4F, 0x39]
-
+        self.__CONST_NUMS = [0x00, 0x9C, 0x38, 0x34, 0x42, 0x4F, 0x39]
         self.filename = filename
 
     def __encode(self, var1, var2, var3, var4=None):
@@ -63,12 +99,12 @@ class ObfuscatedFile(object):
 
         return (var1, var2, var3, var4)
 
-    def _encode_to_numbers(self, key, data):
+    def _encode_to_numbers(self, var1, data):
         from . import obfuscate
-        key = key if key is not None else 0
-        length = len(data)
-        otype = _get_encoder_type(obfuscate)
-        return self.__encode(key, length, otype)
+        var1 = var1 if var1 is not None else 0
+        var2 = len(data)
+        var3 = _get_encoder_type(obfuscate)
+        return self.__encode(var1, var2, var3)
 
     def _pack_header(self, numbers):
         """Create the bytes of the header for the file."""
@@ -82,7 +118,7 @@ class ObfuscatedFile(object):
 
     def read(self, key=None):
         """This function reads a file written by `write`, and returns the
-        deobfuscated data.  This function is not compatible with any other file!
+        deobfuscated data.
 
         :param int key: The key used during `write()`.  NOTE: If you passed in a
             key during `write()`, you *must* use the same key here; the key will not
@@ -106,7 +142,7 @@ class ObfuscatedFile(object):
         :param iterable data: The data you want to encode; the length of data must
             be less than 0xFF (header size limitation)
         :param int key: The key used during encoding
-        :param int minimum_length: The minimum number of bytes to return.  If the
+        :param int minimum_length: The minimum number of bytes to write.  If the
             encoding operation produces fewer bytes that this, random bytes are
             appended to the end of the result so len(bytes) == minimum_length.
         """

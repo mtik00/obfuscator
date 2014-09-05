@@ -1,18 +1,29 @@
 #!/usr/bin/env python2.7
 # -*- coding: iso-8859-15 -*-
-__author__ = "Timothy McFadden"
-__date__ = "08/27/2014"
-__copyright__ = "Timothy McFadden, 2014"
-__license__ = "GPLv2"
-__version__ = "1.0.1"
 """
 This module contains a simple mechanism for obfuscating a set of data.  Consider
 this "security through obscurity".  This module contains no encryption mechanisms!
 
-Example
-=======
+Example::
+
+    >>> from obfuscator import obfuscate_xor, deobfuscate_xor
+    >>> data = [1, 2, 3, 4]
+    >>> key, odata = obfuscate_xor(data)
+    >>> key, odata
+    (162, [163, 160, 161, 166, 166, 154, 181, 60, 131, 24, 88, 35, 137, 240, 216, 161, 247, 218, 19, 116, 54, 21, 217, 190, 137, 81, 68, 200, 35, 210, 133, 139])
+    >>> assert data == deobfuscate_xor(key, odata)[:len(data)]
+    >>>
+    >>> key, odata = obfuscate_xor(data, minimum_length=0)
+    >>> assert data == deobfuscate_xor(key, odata)
+    >>>
 
 """
+__author__ = "Timothy McFadden"
+__date__ = "08/27/2014"
+__copyright__ = "Timothy McFadden, 2014"
+__license__ = "GPLv2"
+__version__ = "1.0.2"
+
 # Imports ######################################################################
 import random
 import operator
@@ -136,7 +147,7 @@ def obfuscate_offset(data, key=None, minimum_length=32):
 
     :param iterable data: The data you want to obfuscate
     :param int key: The value used for the offset operation.  By default, the
-        value will be a random integer between 40 and 128.
+        value will be a random integer between 40 and 127.
     :param int minimum_length: The minimum number of bytes to return.  If the
         encoding operation produces fewer bytes that this, random bytes are
         appended to the end of the result so len(bytes) == minimum_length.
@@ -200,12 +211,12 @@ def rot13(data, minimum_length=32):
     if type(data) is str:
         data = map(ord, data)
 
-    rot13 = string.maketrans(
+    rot13t = string.maketrans(
         "ABCDEFGHIJKLMabcdefghijklmNOPQRSTUVWXYZnopqrstuvwxyz",
         "NOPQRSTUVWXYZnopqrstuvwxyzABCDEFGHIJKLMabcdefghijklm")
 
     def op(x, key):
-        return ord(string.translate(chr(x), rot13))
+        return ord(string.translate(chr(x), rot13t))
 
     return (None, _encode_operation(data, 0, combinator=op, minimum_length=minimum_length))
 
