@@ -44,7 +44,7 @@ class ObfuscatedFile(object):
         207
         >>> read_bytes = of.read()  # Notice how we didn't use a key
         >>> ''.join(map(chr, read_bytes))
-        '\\H\x11BECX_V'
+        ',8a253(/&'
         >>> # The string is wrong because the key is not stored in the file
         >>> read_bytes = of.read(key=my_key)
         >>> ''.join(map(chr, read_bytes))
