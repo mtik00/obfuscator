@@ -45,9 +45,6 @@ if "%1" == "clean" (
 )
 
 if "%1" == "html" (
-	echo.Running auto-generate.py
-	python auto-generate.py
-
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
 	if errorlevel 1 exit /b 1
 	echo.
