@@ -1,5 +1,5 @@
 *.pyc
 */dist
-*/obfuscator.egg-info
+*obfuscator.egg-info
 */build
 *.tar.gz

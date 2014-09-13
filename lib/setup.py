@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 '''obfuscator package setup script.'''
+from __future__ import print_function
 import os
 import sys
 try:
     from setuptools import setup, find_packages
 except ImportError:
-    print >>sys.stderr, "ERROR: This package requires setuptools in order to install."
+    print("ERROR: This package requires setuptools in order to install.", file=sys.stderr)
     sys.exit(1)
 
 package_data = []

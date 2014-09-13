@@ -1,18 +1,21 @@
 #!/usr/bin/env python
-__author__ = "Timothy McFadden"
-__date__ = "09/02/2014"
-__copyright__ = "Timothy McFadden, 2014"
-__license__ = "GPLv2"
-__version__ = "0.01"
 """
 This script is used to create the release package.
 """
 # Imports ######################################################################
+from __future__ import print_function
 import os
 import sys
 import shutil
 import argparse
 import subprocess
+
+# Metadata #####################################################################
+__author__ = "Timothy McFadden"
+__date__ = "09/02/2014"
+__copyright__ = "Timothy McFadden, 2014"
+__license__ = "GPLv2"
+__version__ = "0.01"
 
 # Globals ######################################################################
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -55,7 +58,7 @@ if __name__ == '__main__':
     try:
         subprocess.check_output([sys.executable, 'setup.py', 'sdist', '--formats=gztar'], stderr=subprocess.STDOUT, cwd=LIB_DIR)
     except subprocess.CalledProcessError as e:
-        print e.output
+        print(e.output)
         raise
 
     # move gztar

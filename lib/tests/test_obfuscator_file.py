@@ -1,16 +1,18 @@
 #!/usr/bin/env python
+"""
+This is the unit test for obfuscator.file.
+"""
+from __future__ import print_function
+import os
+import sys
+import tempfile
+import unittest
+
 __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
 __version__ = "0.01"
-"""
-This is the unit test for obfuscator.file.
-"""
-import os
-import sys
-import tempfile
-import unittest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
 import obfuscator.file
@@ -28,7 +30,7 @@ class Test(unittest.TestCase):
         try:
             os.unlink(Test.testfile_path)
         except:
-            print "WARNING: couldn't delete [%s]" % Test.testfile_path
+            print("WARNING: couldn't delete [%s]" % Test.testfile_path)
 
     def test_01_write_string(self):
         data = map(ord, "testing")
