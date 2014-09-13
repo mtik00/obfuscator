@@ -16,7 +16,6 @@ Example::
     >>> key, odata = obfuscate_xor(data, minimum_length=0)
     >>> assert data == deobfuscate_xor(key, odata)
     >>>
-
 """
 __author__ = "Timothy McFadden"
 __date__ = "08/27/2014"
