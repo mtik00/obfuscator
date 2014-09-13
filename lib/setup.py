@@ -30,4 +30,5 @@ if __name__ == '__main__':
         package_data={"obfuscator": ['.*']},
         zip_safe=True,
         include_package_data=True,
+        test_suite="tests",
     )
