@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
 """
 This module contains a simple mechanism for obfuscating a set of data.  Consider
