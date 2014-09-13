@@ -3,3 +3,4 @@
 *obfuscator.egg-info
 */build
 *.tar.gz
+lib/docs

@@ -10,12 +10,13 @@ import shutil
 import argparse
 import subprocess
 
+
 # Metadata #####################################################################
 __author__ = "Timothy McFadden"
 __date__ = "09/02/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "0.01"
+__version__ = "0.02"
 
 # Globals ######################################################################
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -42,6 +43,42 @@ def remove_directory(top, remove_top=True):
         os.rmdir(top)
 
 
+def ex(command, cwd=None):
+    """Execute a command and return the output.  This will raise an Exception if
+    the return code is non-zero.
+    """
+    shell = not type(command) is list
+
+    p = subprocess.Popen(command, shell=shell, cwd=cwd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+    output, _ = p.communicate()
+
+    if p.returncode:
+        raise Exception("command failed: %s" % output)
+
+    return output
+
+
+def make_docs():
+    """Create the documentation and add it to ../lib/docs"""
+    doc_build_dir = os.path.join(THIS_DIR, '..', 'docs')
+    doc_html_build = os.path.join(doc_build_dir, '_build', 'html')
+    doc_dest_dir = os.path.join(THIS_DIR, '..', 'lib', 'docs')
+
+    ex("make clean && make html", cwd=doc_build_dir)
+
+    remove_directory(doc_dest_dir, False)
+
+    items = set(os.listdir(doc_html_build)) ^ set(['.buildinfo', 'objects.inv'])
+    for item in items:
+        source = os.path.abspath(os.path.join(doc_html_build, item))
+        dest = os.path.abspath(os.path.join(doc_dest_dir, item))
+
+        if os.path.isdir(source):
+            shutil.copytree(source, dest)
+        else:
+            shutil.copyfile(source, dest)
+
+
 if __name__ == '__main__':
     release_dir = os.path.realpath(os.path.join(LIB_DIR, '..', 'release'))
     parser = argparse.ArgumentParser()
@@ -54,6 +91,9 @@ if __name__ == '__main__':
     __version__ = None
     with open(os.path.join(LIB_DIR, 'obfuscator', '__init__.py'), 'rb') as f:
         exec(f.read())
+
+    # Build the docs
+    make_docs()
 
     try:
         subprocess.check_output([sys.executable, 'setup.py', 'sdist', '--formats=gztar'], stderr=subprocess.STDOUT, cwd=LIB_DIR)

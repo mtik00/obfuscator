@@ -11,7 +11,7 @@ except ImportError:
 
 package_data = []
 
-## List contains required packages which needs to be installed during svt_http installation
+## List contains required packages which needs to be installed during obfuscator installation
 install_requires = []
 
 # Read the version from our project

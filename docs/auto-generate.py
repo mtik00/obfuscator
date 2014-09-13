@@ -1,27 +1,33 @@
 #!/usr/bin/env python
+"""
+This script is used to create default documentation for a library.
+"""
+# Imports ######################################################################
+import os
+import re
+import argparse
+
+# Metadata #####################################################################
 __author__ = "Timothy McFadden"
 __date__ = "09/05/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "0.01"
-"""
-This script is used to create default documentation for a library.
-"""
+__version__ = "0.03"
 
-# Imports ######################################################################
-import os
-import argparse
 
 # Globals ######################################################################
 
 # Base directory to search for modules
-LIBDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'lib'))
+LIBDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'obfuscator'))
 
 # Base directory to put auto-generated doc files.
 DOCDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), 'rst', 'lib'))
 
 # The auto-generated index file (you'll need to add this to a TOC)
 INDEX_FILE = "rst/auto.rst"
+
+# Only include LIBDIR directories not matching this search.
+IGNORE_DIR = re.compile('^.*\\\\tests(\\\\)?', re.IGNORECASE)
 
 
 def remove_directory(top, remove_top=True):
@@ -59,11 +65,17 @@ if __name__ == '__main__':
     index = []  # Keep track of the files to put into the index
 
     for root, dirs, files in os.walk(args.libdir):
+        module_dir = None
+
         for fname in [x for x in files if x.endswith('.py')]:
             docfile = None
+
+            if (module_dir is None) and ('__init__.py' in files):
+                # import pdb; pdb.set_trace()  # TODO
+                module_dir = root[len(args.libdir) + 1:] or os.path.basename(root)  # 'obfuscator'
+
             if fname == "__init__.py":
                 # Treat modules a little differently
-                module_dir = root[len(args.libdir) + 1:]
                 module_name = module_dir.replace('\\', '.')
                 docfile_name = os.path.split(root)[1]
                 docdir = os.path.join(args.docdir, module_dir, '..')
@@ -71,7 +83,7 @@ if __name__ == '__main__':
                 index_entry = ('lib/%s' % module_dir).replace('\\', '/')
                 automodule = module_name
             elif (os.path.split(root)[1] != docdir_root) and ('__init__.py' in files):
-                module_dir = root[len(args.libdir) + 1:]
+                # module_dir = root[len(args.libdir) + 1:]
                 module_name = fname
                 docfile_name = os.path.splitext(fname)[0]
                 docdir = os.path.join(args.docdir, module_dir)
