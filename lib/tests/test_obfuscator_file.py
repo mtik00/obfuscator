@@ -14,8 +14,16 @@ __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
 __version__ = "0.01"
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import obfuscator.file
+
+
+if sys.version_info.major > 2:
+    import builtins
+    xrange = range
+
+    def map(*args):
+        return list(builtins.map(*args))
 
 
 class Test(unittest.TestCase):

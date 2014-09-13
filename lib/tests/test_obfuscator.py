@@ -3,7 +3,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "0.01"
+__version__ = "0.02"
 """
 This is the unit test for obfuscator.
 """
@@ -11,8 +11,14 @@ import os
 import sys
 import unittest
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import obfuscator
+
+if sys.version_info.major > 2:
+    import builtins
+
+    def map(*args):
+        return list(builtins.map(*args))
 
 
 class Test(unittest.TestCase):

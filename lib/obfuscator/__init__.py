@@ -24,9 +24,12 @@ __license__ = "GPLv2"
 __version__ = "1.0.2"
 
 # Imports ######################################################################
+import sys
 import random
 import operator
 
+if sys.version_info.major > 2:
+    xrange = range
 
 # Globals ######################################################################
 DEFAULT_ENCODER = 1
@@ -205,17 +208,30 @@ def rot13(data, minimum_length=32):
         encoding operation produces fewer bytes that this, random bytes are
         appended to the end of the result so len(bytes) == minimum_length.
     """
-    import string
 
-    if type(data) is str:
-        data = map(ord, data)
+    _from = "ABCDEFGHIJKLMabcdefghijklmNOPQRSTUVWXYZnopqrstuvwxyz"
+    _to = "NOPQRSTUVWXYZnopqrstuvwxyzABCDEFGHIJKLMabcdefghijklm"
 
-    rot13t = string.maketrans(
-        "ABCDEFGHIJKLMabcdefghijklmNOPQRSTUVWXYZnopqrstuvwxyz",
-        "NOPQRSTUVWXYZnopqrstuvwxyzABCDEFGHIJKLMabcdefghijklm")
+    if sys.version_info.major == 2:
+        import string
 
-    def op(x, key):
-        return ord(string.translate(chr(x), rot13t))
+        if type(data) is str:
+            data = map(ord, data)
+
+        rot13t = string.maketrans(_from, _to)
+
+        def op(x, key):
+            return ord(string.translate(chr(x), rot13t))
+    else:
+        if type(data) is str:
+            data = bytes(data, encoding="utf-8")
+
+        _from = bytes(_from, encoding="utf-8")
+        _to = bytes(_to, encoding="utf-8")
+        rot13t = bytes.maketrans(_from, _to)
+
+        def op(x, key):
+                return ord(bytes.translate(bytes(chr(x), encoding="utf-8"), rot13t))
 
     return (None, _encode_operation(data, 0, combinator=op, minimum_length=minimum_length))
 

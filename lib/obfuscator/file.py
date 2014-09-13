@@ -6,11 +6,18 @@ __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 # Imports ######################################################################
+import sys
 import struct
 import random
 from . import _get_encoder_type, _get_decoder
+
+if sys.version_info.major < 3:
+    def next(iterator):
+        return getattr(iterator, "next")()
+elif sys.version_info.major > 2:
+    xrange = range
 
 
 class ObfuscatedFile(object):
@@ -65,15 +72,15 @@ class ObfuscatedFile(object):
 
     def __encode(self, var1, var2, var3, var4=None):
         """Convert the variables into 2 32-bit integers."""
-        r = (random.randint(0, 1) for _ in xrange(1, 64))
         s = var4 if var4 is not None else random.randint(1, 6)
 
         bytes = [0, 0, 0, 0, 0]
-        bytes[0] = (var1 & 0xC0) | r.next() << 5 | (var2 & 0xC0) >> 3 | r.next() << 2 | (var2 & 0x30) >> 4
-        bytes[1] = (var1 & 0x30) << 2 | r.next() << 5 | (var2 & 0x0F) << 1 | r.next()
-        bytes[2] = (var1 & 0x08) << 4 | r.next() << 6 | (var1 & 0x07) << 3 | r.next() << 2 | r.next() << 1 | r.next()
-        bytes[3] = r.next() << 7 | (var3 & 0x04) << 4 | r.next() << 5 | (var3 & 0x03) << 3 | r.next() << 2 | r.next() << 1 | r.next()
-        bytes[4] = r.next() << 7 | r.next() << 6 | (s & 4) << 3 | r.next() | (s & 3) << 2 | r.next() << 1 | r.next()
+        r = (random.randint(0, 1) for _ in xrange(1, 64))
+        bytes[0] = (var1 & 0xC0) | next(r) << 5 | (var2 & 0xC0) >> 3 | next(r) << 2 | (var2 & 0x30) >> 4
+        bytes[1] = (var1 & 0x30) << 2 | next(r) << 5 | (var2 & 0x0F) << 1 | next(r)
+        bytes[2] = (var1 & 0x08) << 4 | next(r) << 6 | (var1 & 0x07) << 3 | next(r) << 2 | next(r) << 1 | next(r)
+        bytes[3] = next(r) << 7 | (var3 & 0x04) << 4 | next(r) << 5 | (var3 & 0x03) << 3 | next(r) << 2 | next(r) << 1 | next(r)
+        bytes[4] = next(r) << 7 | next(r) << 6 | (s & 4) << 3 | next(r) | (s & 3) << 2 | next(r) << 1 | next(r)
 
         return (
             (bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]) ^ self.__CONST_NUM,
