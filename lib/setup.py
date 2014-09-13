@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 '''obfuscator package setup script.'''
+import os
 import sys
 try:
     from setuptools import setup, find_packages
@@ -14,7 +15,8 @@ install_requires = []
 
 # Read the version from our project
 __version__ = None
-with open('obfuscator/__init__.py') as f:
+version_file = os.path.join(os.path.dirname(__file__), 'obfuscator', '__init__.py')
+with open(version_file) as f:
     exec(f.read())
 
 if __name__ == '__main__':
