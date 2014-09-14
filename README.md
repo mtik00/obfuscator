@@ -1,7 +1,7 @@
-obfuscator
-==========
+[![travis ci build state](https://travis-ci.org/mtik00/obfuscator.svg?branch=master)](https://travis-ci.org/mtik00/obfuscator)
 
-![travis ci build state](https://travis-ci.org/mtik00/obfuscator.svg?branch=master)
+Introduction
+============
 
 Obfuscator is a Python package used to obfuscate a set of data (e.g. bytes).  It
 provides **no** encryption!  It's strictly a "security through obscurity" tool,
