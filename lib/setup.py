@@ -3,6 +3,7 @@
 from __future__ import print_function
 import os
 import sys
+import shutil
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -16,15 +17,17 @@ except ImportError:
     print("warning: pypandoc module not found, could not convert Markdown to RST", file=sys.stderr)
     read_md = lambda f: open(f, 'r').read()
 
+THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Read the version from our project
 __version__ = None
-version_file = os.path.join(os.path.dirname(__file__), 'obfuscator', '__init__.py')
+version_file = os.path.join(THIS_DIR, 'obfuscator', '__init__.py')
 with open(version_file) as f:
     exec(f.read())
 
 
 if __name__ == '__main__':
+    shutil.copyfile(os.path.join(THIS_DIR, '..', 'README.md'), 'README.md')
     setup(
         name="obfuscator",
         version=__version__,
@@ -54,5 +57,6 @@ if __name__ == '__main__':
             'Topic :: Security'
         ],
 
-        long_description=read_md(os.path.join(os.path.dirname(__file__), "..", "README.md"))
+        long_description=read_md("README.md")
     )
+    os.unlink("README.md")
