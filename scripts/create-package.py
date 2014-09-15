@@ -8,15 +8,15 @@ import os
 import sys
 import shutil
 import argparse
+import pypandoc
 import subprocess
-
 
 # Metadata #####################################################################
 __author__ = "Timothy McFadden"
 __date__ = "09/02/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "0.02"
+__version__ = "0.03"
 
 # Globals ######################################################################
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -79,6 +79,16 @@ def make_docs():
             shutil.copyfile(source, dest)
 
 
+def update_readme():
+    markup_file = os.path.realpath(os.path.join(LIB_DIR, '..', 'README.md'))
+    rst_file = os.path.realpath(os.path.join(LIB_DIR, '..', 'lib', 'README.rst'))
+
+    rst = pypandoc.convert(markup_file, 'rst')
+
+    with open(rst_file, 'wb') as fh:
+        fh.write(rst)
+
+
 if __name__ == '__main__':
     release_dir = os.path.realpath(os.path.join(LIB_DIR, '..', 'release'))
     parser = argparse.ArgumentParser()
@@ -93,6 +103,7 @@ if __name__ == '__main__':
         exec(f.read())
 
     # Build the docs
+    update_readme()
     make_docs()
 
     try:

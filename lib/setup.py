@@ -3,19 +3,13 @@
 from __future__ import print_function
 import os
 import sys
-import shutil
+
 try:
     from setuptools import setup, find_packages
 except ImportError:
     print("ERROR: This package requires setuptools in order to install.", file=sys.stderr)
     sys.exit(1)
 
-try:
-    import pypandoc
-    read_md = lambda f: pypandoc.convert(f, 'rst')
-except ImportError:
-    print("warning: pypandoc module not found, could not convert Markdown to RST", file=sys.stderr)
-    read_md = lambda f: open(f, 'r').read()
 
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -27,7 +21,6 @@ with open(version_file) as f:
 
 
 if __name__ == '__main__':
-    shutil.copyfile(os.path.join(THIS_DIR, '..', 'README.md'), os.path.join(THIS_DIR, 'README.md'))
     setup(
         name="obfuscator",
         version=__version__,
@@ -57,6 +50,5 @@ if __name__ == '__main__':
             'Topic :: Security'
         ],
 
-        long_description=read_md("README.md")
+        long_description=open("README.rst", 'r').read()
     )
-    os.unlink("README.md")
