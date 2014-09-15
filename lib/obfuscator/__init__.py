@@ -21,7 +21,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/27/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 # Imports ######################################################################
 import sys
