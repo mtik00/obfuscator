@@ -27,7 +27,7 @@ with open(version_file) as f:
 
 
 if __name__ == '__main__':
-    shutil.copyfile(os.path.join(THIS_DIR, '..', 'README.md'), 'README.md')
+    shutil.copyfile(os.path.join(THIS_DIR, '..', 'README.md'), os.path.join(THIS_DIR, 'README.md'))
     setup(
         name="obfuscator",
         version=__version__,
