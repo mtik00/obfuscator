@@ -9,6 +9,13 @@ except ImportError:
     print("ERROR: This package requires setuptools in order to install.", file=sys.stderr)
     sys.exit(1)
 
+try:
+    import pypandoc
+    read_md = lambda f: pypandoc.convert(f, 'rst')
+except ImportError:
+    print("warning: pypandoc module not found, could not convert Markdown to RST", file=sys.stderr)
+    read_md = lambda f: open(f, 'r').read()
+
 
 # Read the version from our project
 __version__ = None
@@ -47,33 +54,5 @@ if __name__ == '__main__':
             'Topic :: Security'
         ],
 
-        long_description="""\
-Introduction
-============
-
-Obfuscator is a Python package used to obfuscate a set of data (e.g. bytes).  It
-provides **no** encryption!  It's strictly a "security through obscurity" tool,
-with limited usefulness.  You have been warned!
-
-Documentation
-=============
-
-Documentation is hosted on readthedocs: [obfuscator.readthedocs.org](http://obfuscator.readthedocs.org/en/latest/)
-
-Install
-=======
-Download the tarball and install with `pip install <package>`.
-
-Usage
-=====
-See the unit tests for more in-depth examples.  Here are the basics:
-
-```python
-import obfuscator
-original_bytes = map(ord, "testing")
-_key, obfuscated_bytes = obfuscator.obfuscate_xor(original_bytes, key=0x66)
-deobfuscated_bytes = obfuscator.deobfuscate_xor(key=0x66, data=obfuscated_bytes)
-assert original_bytes == deobfuscated_bytes
-```
-"""
+        long_description=read_md(os.path.join("..", "README.md"))
     )
