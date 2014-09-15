@@ -24,6 +24,7 @@ if __name__ == '__main__':
         description="Data obfuscator package",
         author="Timothy McFadden",
         url="https://github.com/mtik00/obfuscator",
+        download_url="https://github.com/mtik00/obfuscator/releases/tag/v{}".format(__version__),
         install_requires=[],
         packages=find_packages(),
         package_data={"obfuscator": ['.*']},
