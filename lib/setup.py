@@ -54,5 +54,5 @@ if __name__ == '__main__':
             'Topic :: Security'
         ],
 
-        long_description=read_md(os.path.join("..", "README.md"))
+        long_description=read_md(os.path.join(os.path.dirname(__file__), "..", "README.md"))
     )
