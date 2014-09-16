@@ -50,5 +50,5 @@ if __name__ == '__main__':
             'Topic :: Security'
         ],
 
-        long_description=open("README.rst", 'r').read()
+        long_description=open(os.path.join(THIS_DIR, "README.rst"), 'r').read()
     )
