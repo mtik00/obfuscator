@@ -23,7 +23,7 @@ THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 LIB_DIR = os.path.realpath(os.path.join(THIS_DIR, '..', 'lib'))
 
 
-def remove_directory(top, remove_top=True):
+def remove_directory(top, remove_top=True, filter=None):
     '''
     Removes all files and directories, bottom-up.
 
@@ -32,8 +32,11 @@ def remove_directory(top, remove_top=True):
     @type remove_top: bool
     @param remove_top: Whether or not to remove the top directory
     '''
+    if filter is None:
+        filter = lambda x: True
+
     for root, dirs, files in os.walk(top, topdown=False):
-        for name in files:
+        for name in [x for x in files if filter(x)]:
             os.remove(os.path.join(root, name))
 
         for name in dirs:
@@ -101,6 +104,8 @@ if __name__ == '__main__':
     __version__ = None
     with open(os.path.join(LIB_DIR, 'obfuscator', '__init__.py'), 'rb') as f:
         exec(f.read())
+
+    remove_directory(release_dir, remove_top=False, filter=lambda x: "keep" not in x)
 
     # Build the docs
     update_readme()
