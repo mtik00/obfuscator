@@ -26,4 +26,9 @@ original_bytes = map(ord, "testing")
 _key, obfuscated_bytes = obfuscator.obfuscate_xor(original_bytes, key=0x66)
 deobfuscated_bytes = obfuscator.deobfuscate_xor(key=0x66, data=obfuscated_bytes)
 assert original_bytes == deobfuscated_bytes
+
+ofile = obfuscator.file.ObfuscatedFile("test.bin")
+data = map(ord, "testing")
+ofile.write(data, key=123, minimum_length=32)
+self.assertEqual(32, os.path.getsize("test.bin"))
 ```
