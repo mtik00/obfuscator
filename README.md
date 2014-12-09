@@ -1,5 +1,5 @@
 [![travis ci build state](https://travis-ci.org/mtik00/obfuscator.svg?branch=master)](https://travis-ci.org/mtik00/obfuscator)
-[![Coverage Status](https://img.shields.io/coveralls/mtik00/obfuscator.svg)](https://coveralls.io/r/mtik00/obfuscator)
+[![Coverage Status](https://coveralls.io/repos/mtik00/obfuscator/badge.png?branch=master)](https://coveralls.io/r/mtik00/obfuscator?branch=master)
 
 Introduction
 ============
