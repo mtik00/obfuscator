@@ -1,4 +1,4 @@
-|travis ci build state|
+|travis ci build state| |Coverage Status|
 
 Introduction
 ============
@@ -31,5 +31,12 @@ See the unit tests for more in-depth examples. Here are the basics:
     deobfuscated_bytes = obfuscator.deobfuscate_xor(key=0x66, data=obfuscated_bytes)
     assert original_bytes == deobfuscated_bytes
 
+    ofile = obfuscator.file.ObfuscatedFile("test.bin")
+    data = map(ord, "testing")
+    ofile.write(data, key=123, minimum_length=32)
+    self.assertEqual(32, os.path.getsize("test.bin"))
+
 .. |travis ci build state| image:: https://travis-ci.org/mtik00/obfuscator.svg?branch=master
    :target: https://travis-ci.org/mtik00/obfuscator
+.. |Coverage Status| image:: https://coveralls.io/repos/mtik00/obfuscator/badge.png?branch=master
+   :target: https://coveralls.io/r/mtik00/obfuscator?branch=master
