@@ -4,3 +4,4 @@
 */build
 *.tar.gz
 lib/docs
+.coverage

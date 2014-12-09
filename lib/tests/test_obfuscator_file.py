@@ -80,6 +80,12 @@ class Test(unittest.TestCase):
         read_string = ''.join(map(chr, data))
         self.assertEqual("testing", read_string)
 
+    def test_08_write_long(self):
+        data = [23] * 270
+        self.assertRaises(ValueError, Test.file.write, data, 0)
+        # Test.file.write(data, minimum_length=0)
+        # self.assertEqual(len(data) + Test.file.size, os.path.getsize(Test.testfile_path))
+
 
 if __name__ == '__main__':
     unittest.main()

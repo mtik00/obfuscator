@@ -120,6 +120,13 @@ class Test(unittest.TestCase):
         self.assertEqual((None, encoded), obfuscator.rot13(original, minimum_length=0))
         self.assertEqual((None, encoded), obfuscator.obfuscate_rot13(original, minimum_length=0))
 
+    def test_rot13_encode_str(self):
+        original = "test"
+        encoded = map(ord, "grfg")
+
+        self.assertEqual((None, encoded), obfuscator.rot13(original, minimum_length=0))
+        self.assertEqual((None, encoded), obfuscator.obfuscate_rot13(original, minimum_length=0))
+
     def test_rot13_decode(self):
         original = map(ord, "test")
         encoded = map(ord, "grfg")
