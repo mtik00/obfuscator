@@ -1,2 +1,2 @@
-include docs/*
+recursive-include docs *.*
 include README.rst
