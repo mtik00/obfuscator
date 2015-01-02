@@ -6,7 +6,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 # Imports ######################################################################
 import sys
 import struct
@@ -161,7 +161,7 @@ class ObfuscatedFile(object):
 
         # Don't store the key in the file if the user passes it in
         # (they'll need to remember it).
-        _write_key = _key if key is None else random.randint(0, 256)
+        _write_key = _key if key is None else random.randint(1, 255)
 
         numbers = self._encode_to_numbers(_write_key, data)
         _, _, _, var4 = self.__decode(numbers)
