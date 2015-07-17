@@ -177,12 +177,12 @@ if __name__ == '__main__':
         path, key = sys.argv[2:4]
         ofile = ObfuscatedFile(path)
         bytes = ofile.read(int(key))
-        print "".join([chr(x) for x in bytes])
+        print("".join([chr(x) for x in bytes]))
     elif "encode-str" in sys.argv:
         path, key, string = sys.argv[2:5]
         ofile = ObfuscatedFile(path)
         bytes = map(ord, string)
-        print bytes
+        print(bytes)
         ofile.write(bytes, int(key))
     else:
         print("Usage:")
