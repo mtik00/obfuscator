@@ -86,6 +86,11 @@ class Test(unittest.TestCase):
         # Test.file.write(data, minimum_length=0)
         # self.assertEqual(len(data) + Test.file.size, os.path.getsize(Test.testfile_path))
 
+    def test_main(self):
+        obfuscator.file.main(["", "encode-str", "temp.bin", "13", "testing"])
+        obfuscator.file.main(["", "decode-str", "temp.bin", "13"])
+        obfuscator.file.main()
+
 
 if __name__ == '__main__':
     unittest.main()

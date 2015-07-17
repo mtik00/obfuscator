@@ -172,14 +172,15 @@ class ObfuscatedFile(object):
 
         return _key
 
-if __name__ == '__main__':
-    if "decode-str" in sys.argv:
-        path, key = sys.argv[2:4]
+
+def main(args=sys.argv):
+    if "decode-str" in args:
+        path, key = args[2:4]
         ofile = ObfuscatedFile(path)
         bytes = ofile.read(int(key))
         print("".join([chr(x) for x in bytes]))
-    elif "encode-str" in sys.argv:
-        path, key, string = sys.argv[2:5]
+    elif "encode-str" in args:
+        path, key, string = args[2:5]
         ofile = ObfuscatedFile(path)
         bytes = map(ord, string)
         print(bytes)
@@ -188,3 +189,7 @@ if __name__ == '__main__':
         print("Usage:")
         print("\tpython -m obfuscator.file encode-str <path-to-file> <key> \"string to encode\"")
         print("\tpython -m obfuscator.file decode-str <path-to-file> <key>")
+
+
+if __name__ == '__main__':
+    sys.exit(main())
