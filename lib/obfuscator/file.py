@@ -17,7 +17,11 @@ if sys.version_info.major < 3:
     def next(iterator):
         return getattr(iterator, "next")()
 elif sys.version_info.major > 2:
+    import builtins
     xrange = range
+
+    def map(*args):
+        return list(builtins.map(*args))
 
 
 class ObfuscatedFile(object):
