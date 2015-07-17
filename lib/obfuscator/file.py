@@ -6,7 +6,7 @@ __author__ = "Timothy McFadden"
 __date__ = "08/28/2014"
 __copyright__ = "Timothy McFadden, 2014"
 __license__ = "GPLv2"
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 # Imports ######################################################################
 import sys
 import struct
@@ -171,3 +171,20 @@ class ObfuscatedFile(object):
             fh.write(struct.pack('%iB' % len(bytes), *bytes))
 
         return _key
+
+if __name__ == '__main__':
+    if "decode-str" in sys.argv:
+        path, key = sys.argv[2:4]
+        ofile = ObfuscatedFile(path)
+        bytes = ofile.read(int(key))
+        print "".join([chr(x) for x in bytes])
+    elif "encode-str" in sys.argv:
+        path, key, string = sys.argv[2:5]
+        ofile = ObfuscatedFile(path)
+        bytes = map(ord, string)
+        print bytes
+        ofile.write(bytes, int(key))
+    else:
+        print("Usage:")
+        print("\tpython -m obfuscator.file encode-str <path-to-file> <key> \"string to encode\"")
+        print("\tpython -m obfuscator.file decode-str <path-to-file> <key>")
